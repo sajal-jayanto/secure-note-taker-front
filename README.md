@@ -31,6 +31,24 @@ Vite reads `.env` at startup, so restart `npm run dev` after changing it.
 | `npm run preview` | Serve the production build locally |
 | `npm run lint` | Lint with Oxlint |
 
+### Docker
+
+The app is built with Node and served by nginx on **port 8080**.
+
+```bash
+# Uses VITE_API_BASE_URL from .env
+docker compose up -d --build   # http://localhost:8080
+docker compose down            # stop
+```
+
+`VITE_API_BASE_URL` is compiled into the app during the image build. After changing it, rebuild with `docker compose up -d --build`; a restart alone won't pick it up.
+
+| File | Purpose |
+|---|---|
+| `Dockerfile` | Multi-stage build: `node:24-alpine` builds, `nginx:1.27-alpine` serves |
+| `nginx.conf` | Listens on 8080 and sends unknown paths (`/notes`, `/profile`, …) to `index.html` so refreshes work |
+| `docker-compose.yml` | Builds the image, passes the API URL, and maps `8080:8080` |
+
 ## Features
 
 | Page | Path | Admin | User | What it does |

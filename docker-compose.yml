@@ -1,0 +1,11 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:?Set VITE_API_BASE_URL in .env}
+    image: secure-note-taker-front
+    container_name: secure-note-taker-front
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
